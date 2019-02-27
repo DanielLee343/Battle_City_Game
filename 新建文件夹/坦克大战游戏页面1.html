@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>坦克大战</title>
+		<style type="text/css">
+			body{
+				overflow:hidden;
+				margin:0;
+			}
+			input{
+				position:absolute;
+				top:0;
+				left:0;
+			}
+		</style>
+		<script type="text/javascript" src="tank.js"></script>
+		<script type="text/javascript" src="obstacle.js"></script>
+		<script type="text/javascript" src="game1.js"></script>
+		<script type="text/javascript">
+		function myAddEvent(obj, ev, fn)
+		{
+			if(obj.attachEvent)
+				obj.attachEvent('on'+ev, fn);
+			else
+				obj.addEventListener(ev, fn, false);
+		}
+		window.onload = function ()
+		{
+			var oCan = document.getElementById('can1');
+			var cxt = oCan.getContext('2d');
+			var timers = [];
+			var keys = [];
+			for(var i = 0; i < 128; i++)
+				keys[i] = false;
+			myAddEvent(document, 'keydown', function (ev)
+			{
+				var oEvent = ev || event;
+				keys[oEvent.keyCode] = true;
+			});
+			myAddEvent(document, 'keyup', function (ev)
+			{
+				var oEvent = ev || event;
+				keys[oEvent.keyCode] = false;
+			});
+			document.onkeydown = function (ev)
+			{
+				var oEvent = ev || event;
+				if(keys[37])
+				{
+					clearInterval(timers[37]);
+					timers[37] = setInterval(function ()
+					{
+						if(keys[38] == false && keys[40] == false)
+							player.moveLeft();
+					}, 30);
+				}
+				if(keys[38])
+				{
+					clearInterval(timers[38]);
+					timers[38] = setInterval(function ()
+					{
+						if(keys[37] == false && keys[39] == false)
+							player.moveUp();
+					}, 30);
+				}
+				if(keys[39])
+				{
+					clearInterval(timers[39]);
+					timers[39] = setInterval(function ()
+					{
+						if(keys[38] == false && keys[40] == false)
+							player.moveRight();
+					}, 30);
+				}
+				if(keys[40])
+				{
+					clearInterval(timers[40]);
+					timers[40] = setInterval(function ()
+					{
+						if(keys[37] == false && keys[39] == false)
+							player.moveDown();
+					}, 30);
+				}
+				if(keys[32] && player.isLive)
+					player.shotEnemy();
+				
+				if(keys[118])
+					window.open('../坦克大战.html', '_self');
+				
+			};
+			document.onkeyup = function (ev)
+			{
+				var oEvent = ev || event;
+				if(oEvent.keyCode == 37)
+					clearInterval(timers[37]);
+				if(oEvent.keyCode == 38)
+					clearInterval(timers[38]);
+				if(oEvent.keyCode == 39)
+					clearInterval(timers[39]);
+				if(oEvent.keyCode == 40)
+					clearInterval(timers[40]);
+			};
+			clearInterval(timers[0]);
+			timers[0] = setInterval(function ()
+			{
+				refreshMap();
+			}, 30);
+		};
+		</script>
+	</head>
+	<body>
+		<canvas id="can1" width="1366px" height="644px" style="background:black">
+		</canvas>
+		<video id="vid1" autoplay></video>
+	</body>
+</html>

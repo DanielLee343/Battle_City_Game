@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>画图</title>
+		<script>
+		function myAddEvent(obj, ev, fn)
+		{
+			if(obj.attachEvent)
+				obj.attachEvent('on'+ev, fn);
+			else
+				obj.addEventListener(ev, fn, false);
+		}
+		function move(cxt, x, y, dir)
+		{
+			cxt.clearRect(0, 0, 500, 400);
+			cxt.fillStyle = '#DED284';
+			cxt.fillRect(x, y, 10, 60);
+			cxt.fillRect(x+30, y, 10, 60);
+			cxt.fillRect(x+11, y+10, 18, 40);
+			cxt.fillStyle = '#FFD972';
+			cxt.arc(x+20, y+30, 8, 0, Math.PI*2, true);
+			cxt.fill();
+			cxt.strokeStyle = '#FFD972';
+			cxt.lineWidth = 2;
+			cxt.beginPath();
+			cxt.moveTo(x+20, y+30);
+			cxt.lineTo(x+20, y+dir);
+			cxt.closePath();
+			cxt.stroke();
+		}
+		function move2(cxt, x, y, dir)
+		{
+			cxt.clearRect(0, 0, 500, 400);
+			cxt.fillStyle = '#DED284';
+			cxt.fillRect(x-10, y+10, 60, 10);
+			cxt.fillRect(x-10, y+40, 60, 10);
+			cxt.fillRect(x, y+21, 40, 18);
+			cxt.fillStyle = '#FFD972';
+			cxt.arc(x+20, y+30, 8, 0, Math.PI*2, true);
+			cxt.fill();
+			cxt.strokeStyle = '#FFD972';
+			cxt.lineWidth = 2;
+			cxt.beginPath();
+			cxt.moveTo(x+20, y+30);
+			cxt.lineTo(x+dir-10, y+30);
+			cxt.closePath();
+			cxt.stroke();
+		}
+		window.onload = function ()
+		{
+			var oCan = document.getElementById('can1');
+			var cxt = oCan.getContext('2d');
+			var x = 40, y = 50;
+			var timer = [];
+			var keys = [];
+			for(var i = 37; i <= 40; i++)
+				keys[i] = false;
+			myAddEvent(document, 'keydown', function (ev)
+			{
+				oEvent = ev||event;
+				keys[oEvent.keyCode] = true;
+			});
+			myAddEvent(document, 'keyup', function (ev)
+			{
+				oEvent = ev||event;
+				keys[oEvent.keyCode] = false;
+			});
+			/*
+			cxt.fillStyle = '#DED284';
+			cxt.fillRect(x, y, 10, 60);
+			cxt.fillRect(x+30, y, 10, 60);
+			cxt.fillRect(x+11, y+10, 18, 40);
+			cxt.fillStyle = '#FFD972';
+			cxt.arc(x+20, y+30, 8, 0, Math.PI*2, true);
+			cxt.fill();
+			cxt.strokeStyle = '#FFD972';
+			cxt.lineWidth = 2;
+			cxt.beginPath();
+			cxt.moveTo(x+20, y+30);
+			cxt.lineTo(x+20, y);
+			cxt.closePath();
+			cxt.stroke();
+			*/
+			move(cxt, x, y, 0);
+			document.onkeydown = function (ev)
+			{
+				var oEvent = ev||event;
+				//clearInterval(timer);
+				//timer = setInterval(function ()
+				//{
+					var oEvent = ev||event;
+					if(keys[37])
+					{
+						clearInterval(timer[0]);
+						timer[0] = setInterval(function ()
+						{
+							if(keys[38] == false && keys[40] == false)
+							{
+								x -= 2;							
+								move2(cxt, x, y, 0);
+							}
+						}, 30);
+					}
+					if(keys[38])
+					{
+						clearInterval(timer[1]);
+						timer[1] = setInterval(function ()
+						{
+							if(keys[37] == false && keys[39] == false)
+							{
+								y -= 2;
+								move(cxt, x, y, 0);
+							}
+						}, 30);
+					}
+					if(keys[39])
+					{
+						clearInterval(timer[2]);
+						timer[2] = setInterval(function ()
+						{
+							if(keys[38] == false && keys[40] == false)
+							{
+								x += 2;
+								move2(cxt, x, y, 60);
+							}
+						}, 30);
+					}	
+					if(keys[40])
+					{
+						clearInterval(timer[3]);
+						timer[3] = setInterval(function ()
+						{
+							if(keys[37] == false && keys[39] == false)
+							{
+								y += 2;
+								move(cxt, x, y, 60);
+							}
+						}, 30);
+					}
+				//}, 30);
+			};
+			document.onkeyup = function (ev)
+			{
+				var oEvent = ev||event;
+				if(oEvent.keyCode == 37)
+					clearInterval(timer[0]);
+				if(oEvent.keyCode == 38)
+					clearInterval(timer[1]);
+				if(oEvent.keyCode == 39)
+					clearInterval(timer[2]);
+				if(oEvent.keyCode == 40)
+					clearInterval(timer[3]);
+			};
+		};
+		</script>
+	</head>
+	<body>
+		<canvas id="can1" width="500px" height="400px" style="border:1px solid black;">
+		</canvas>
+	</body>
+</html>

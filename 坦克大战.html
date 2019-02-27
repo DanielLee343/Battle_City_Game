@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>坦克大战</title>
+		<style>
+			body{
+				overflow:hidden;
+				margin:0;
+				background:black;
+			}
+			span{
+				position:absolute;
+				text-shadow:5px 5px 7px yellow;
+				box-shadow:0px 0px 40px yellow;
+			}
+			embed{
+				visibility:hidden;
+			}
+			#btn1{
+				position:absolute;
+				left:560px;
+				top:320px;
+				font-size:45px;
+				background:black;
+				color:rgb(0, 0, 255);
+				border:1px solid rgb(0, 255, 0);
+			}
+			#btn2{
+				position:absolute;
+				left:560px;
+				top:410px;
+				font-size:45px;
+				background:black;
+				color:rgb(0, 0, 255);
+				border:1px solid rgb(0, 255, 0);
+			}
+			#btn3{
+				position:absolute;
+				left:560px;
+				top:500px;
+				font-size:45px;
+				background:black;
+				color:rgb(0, 0, 255);
+				border:1px solid rgb(0, 255, 0);
+			}
+		</style>
+		<script type="text/javascript" src="move.js"></script>
+		<script>
+		document.onselectstart = function ()
+		{
+			return false;
+		};
+		window.onload = function ()
+		{
+			var s = '坦克大战';
+			var i = 0;
+			var oBtn1 = document.getElementById('btn1');
+			var oBtn2 = document.getElementById('btn2');
+			var oBtn3 = document.getElementById('btn3');
+			var timer = setInterval(function ()
+			{
+				var oSpan = document.createElement('span');
+				oSpan.innerHTML = s.charAt(i);
+				oSpan.style.left = 500+i*60+'px';
+				oSpan.style.top = 140+'px';
+				oSpan.style.color = 'yellow';
+				oSpan.style.fontSize = 200+'px';
+				startMove(oSpan, {'fontSize':60, 'left':520+i*70});
+				document.body.appendChild(oSpan);
+				i++;
+				var oEmbed = document.createElement('embed');
+				oEmbed.src = '爆炸.wav';
+				document.body.appendChild(oEmbed);
+				if(i == 4)
+					clearInterval(timer);
+			}, 300);
+			oBtn3.onmouseover = oBtn2.onmouseover = oBtn1.onmouseover = function ()
+			{
+				this.style.backgroundColor = 'rgb(132, 222, 29)';
+				this.style.color = 'orange';
+			};
+			oBtn3.onmouseout = oBtn2.onmouseout = oBtn1.onmouseout = function ()
+			{
+				this.style.backgroundColor = 'black';
+				this.style.color = 'rgb(0, 0, 255)';
+			};
+			oBtn1.onclick = function ()
+			{
+				window.open('新建文件夹/关卡.html', '_self');
+			};
+		};
+		</script>
+	</head>
+	<body>
+		<input id="btn1" type="button" value="单人游戏" />
+		<input id="btn2" type="button" value="双人游戏" />
+		<input id="btn3" type="button" value="游戏说明" />
+		<video id="vid1" autoplay></video>
+	</body>
+</html>
